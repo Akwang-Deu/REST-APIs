@@ -5,13 +5,13 @@ from django.db import models
 class Class(models.Model):
     class_name = models.CharField(max_length=20)
     class_capacity = models.PositiveSmallIntegerField()
-    teacher_in_charge = models.CharField()
+    teacher_in_charge = models.CharField(max_length=20)
     no_of_groups = models.PositiveSmallIntegerField()
     description = models.PositiveSmallIntegerField()
     course = models.PositiveSmallIntegerField()
-    schedule = models.CharField()
-    artwork = models.CharField()
-    class_representative = models.CharField()
+    schedule = models.CharField(max_length=20)
+    artwork = models.CharField(max_length=20)
+    class_representative = models.CharField(max_length=20)
     room_number = models.PositiveSmallIntegerField()
     
 

@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 from rest_framework import serializers
 from student.models import Student
 from classperiod.models import ClassPeriod

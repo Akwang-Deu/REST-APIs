@@ -6,13 +6,13 @@ class Teacher(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     email = models.EmailField()
-    country = models.CharField()
-    course = models.CharField()
+    country = models.CharField(max_length=20)
+    course = models.CharField(max_length=20)
     teacher_id = models.PositiveSmallIntegerField()
     hire_date = models.DateField()
-    contact = models.CharField()
-    gender = models.CharField()
-    specialization = models.CharField()
+    contact = models.CharField(max_length=20)
+    gender = models.CharField(max_length=20)
+    specialization = models.CharField(max_length=20)
 
    
 
