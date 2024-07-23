@@ -13,12 +13,12 @@ from rest_framework import status
 class StudentListView(APIView):
     def get(self, request):
         students = Student.objects.all()
-        serializers = StudentSerializer(students, many=True)
+        serializer = StudentSerializer(students, many=True)
         return Response(serializer.data)
 
     def post(self, request):
         serializer = StudentSerializer(data=request.data)
-        if serializers.is_valid():
+        if serializer.is_valid():
             serializers.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -30,9 +30,9 @@ class StudentListView(APIView):
 class StudentDetailView(APIView):
     def put(self, request, id):
         student = Student.objects.get(id = id)
-        serializers = StudentSerializer(student, data=request.data)
+        serializer = StudentSerializer(student, data=request.data)
         if serializer.is_valid():
-            serializers.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         else:
@@ -67,9 +67,9 @@ class TeacherListView(APIView):
 class TeacherDetailView(APIView):
     def put(self, request, id):
         teacher = Teacher.objects.get(id=id)
-        serializers = StudentSerializer(teacher,data=request.data)
+        serializer = StudentSerializer(teacher,data=request.data)
         if serializer.is_valid():
-            serializers.save()
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
         else:
@@ -87,7 +87,7 @@ class TeacherDetailView(APIView):
 class ClassperiodListView(APIView):
     def get(self, request):
         classperiod = ClassPeriod.objects.all()
-        serializers = ClassPeriodSerializer(classperiod, many=True)
+        serializer = ClassPeriodSerializer(classperiod, many=True)
         return Response(serializer.data)
 
     
