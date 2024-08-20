@@ -85,7 +85,13 @@ class StudentDetailView(APIView):
 class TeacherListView(APIView):
     def get(self, request):
         teachers = Teacher.objects.all()
-        serializer = TeacherSerializer(teachers, many=True)
+        first_name = request.query_params.get("first_name")
+        cv = request.query_params.get("cv")
+        if first_name:
+            students = students.filter(first_name=first_name)
+        if cv:
+            students = students.filter(cv=cv)
+        serializer = MinimalTeacherSerializer(teachers, many=True)
         return Response(serializer.data)
 
 
@@ -149,8 +155,13 @@ class TeacherDetailView(APIView):
 
 class ClassperiodListView(APIView):
     def get(self, request):
-        classperiod = ClassPeriod.objects.all()
-        serializer = ClassPeriodSerializer(classperiod, many=True)
+        end_time = request.query_params.get("end_time")
+        start_time = request.query_params.get("start-time")
+        if end_time:
+            Classperiod = Classperiod.filter(first_name=end_time)
+        if start_time:
+            student=student.filter()
+        serializer = MinimalStudentSerializer(student, many=True)
         return Response(serializer.data)
 
     
@@ -207,11 +218,64 @@ class CourseDetailView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
     def delete(self, request, id):
         course =Course.objects.get()
         serializer.delete()
         return Response(status=status.HTTP_202_ACCEPTED)
+
+    
+    def post (self, request, id):
+        course = Course.objects.get(id=id)
+        action = request.data.get("action")
+        if action == "assign_teacher":
+            teacher_id = request.data.get("teacher")
+            teacher= Teacher.objects.get(id=teacher_id)
+            course.teaches.add(teacher)
+            return Response({"status": "teacher assigned"}, status=status.HTTP_201_CREATED)
+        return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
+
+ 
+class ClassroomListView(APIView):
+    def get(self, request, id):
+        classroom = Classroom.objects.get(id=id)
+        serializer = ClassroomSerializer(classroom)
+        return Response(serializer.data)
+
+    def put(self, request, id):
+        classroom = Classroom.objects.get(id=id)
+        serializer = ClassroomSerializer(classroom, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ClassroomDetailView(APIView):
+
+    def delete(self, request, id):
+        classroom = Classroom.objects.get(id=id)
+        classroom.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
+    def post(self, request, id):
+        classroom = Classroom.objects.get(id=id)
+        action = request.data.get("action")
+        if action == "add_student":
+            student_id = request.data.get("student")
+            student = Student.objects.get(id=student_id)
+            classroom.students.add(student)
+            return Response({"status": "student added"}, status=status.HTTP_201_CREATED)
+        return Response({"error": "Invalid action"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+
+
         
 
 
