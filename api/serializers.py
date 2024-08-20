@@ -6,10 +6,14 @@ from classperiod.models import ClassPeriod
 from teacher.models import Teacher
 from course.models import Course
 
-class StudentSerializer(serializers.ModelSerializer):
+
+
+
+class CourseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Student
+        model = Course
         fields = "__all__"
+
 class ClassPeriodSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassPeriod
@@ -18,10 +22,22 @@ class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = "__all__"
-class CourseSerializer(serializers.ModelSerializer):
+
+
+class MinimalStudentSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+    def get_full_name(self, object):
+        return f"{object.first_name}{object.last_name}"
     class Meta:
-        model = Course
+        model = Student
+        fields = ["id","full_name", "email"]
+class StudentSerializer(serializers.ModelSerializer):
+    course = CourseSerializer(many=True)
+    class Meta:
+        model = Student
         fields = "__all__"
+    
+
 
 
 

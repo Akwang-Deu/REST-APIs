@@ -5,7 +5,7 @@ from django.db import models
 
 class Course(models.Model):
     title = models.CharField(max_length=20)
-    course_code = models.PositiveSmallIntegerField()
+    course_id = models.PositiveSmallIntegerField()
     topics = models.PositiveSmallIntegerField()
     teacher_in_charge = models.CharField(max_length=20)
     duration = models.TimeField()
